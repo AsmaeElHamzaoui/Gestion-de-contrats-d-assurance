@@ -31,4 +31,15 @@ public class Contrat {
     public void setDateDebut(LocalDate dateDebut) { this.dateDebut = dateDebut; }
     public void setDateFin(LocalDate dateFin) { this.dateFin = dateFin; }
     public void setClientId(int clientId) { this.clientId = clientId; }
+
+    @Override
+    public String toString() {
+        return "Contrat { " +
+                "id=" + id +
+                ", typeContrat=" + typeContrat +
+                ", dateDebut=" + dateDebut +
+                ", dateFin=" + dateFin +
+                ", clientId=" + clientId +
+                " }";
+    }
 }

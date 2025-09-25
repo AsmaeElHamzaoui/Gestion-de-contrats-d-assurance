@@ -35,7 +35,7 @@ public class ContratView {
             try {
                 switch (choice) {
                     case 1:
-                        System.out.print("Type de contrat (AUTO, HABITATION, SANTE) : ");
+                        System.out.print("Type de contrat (AUTOMOBILE, MAISON, MALADIE) : ");
                         String type = scanner.nextLine().toUpperCase();
                         System.out.print("Date de début (YYYY-MM-DD) : ");
                         String dateDebut = scanner.nextLine();

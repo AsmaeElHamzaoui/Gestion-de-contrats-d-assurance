@@ -35,4 +35,17 @@ public class Sinistre {
     public void setCout(double cout) { this.cout = cout; }
     public void setDescription(String description) { this.description = description; }
     public void setContratId(int contratId) { this.contratId = contratId; }
+
+    @Override
+    public String toString() {
+        return "Sinistre { " +
+                "id=" + id +
+                ", typeSinistre=" + typeSinistre +
+                ", dateTime=" + dateTime +
+                ", cout=" + cout +
+                ", description='" + description + '\'' +
+                ", contratId=" + contratId +
+                " }";
+    }
+
 }
