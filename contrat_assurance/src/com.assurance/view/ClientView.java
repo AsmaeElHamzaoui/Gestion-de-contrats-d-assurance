@@ -23,7 +23,9 @@ public class ClientView {
             System.out.println("3. Afficher tous les clients");
             System.out.println("4. Modifier un client");
             System.out.println("5. Supprimer un client");
-            System.out.println("6. Retour");
+            System.out.println("6. Rechercher un client par nom de famille");
+            System.out.println("7. Afficher les clients d'un conseiller par ID");
+            System.out.println("8. Retour");
             System.out.print("Choix : ");
 
             int choice = scanner.nextInt();
@@ -111,6 +113,38 @@ public class ClientView {
                     }
                     break;
                 case 6:
+                    System.out.print("Nom de famille à rechercher : ");
+                    String searchNom = scanner.nextLine();
+                    try {
+                        List<Client> foundClients = clientService.searchClientsByNom(searchNom);
+                        if (foundClients.isEmpty()) {
+                            System.out.println("Aucun client trouvé avec ce nom.");
+                        } else {
+                            for (Client c : foundClients) {
+                                System.out.println(c);
+                            }
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Erreur : " + e.getMessage());
+                    }
+                    break;
+                case 7:
+                    System.out.print("ID du conseiller : ");
+                    int clientsConseillerId = scanner.nextInt();
+                    try {
+                        List<Client> clients = clientService.getClientsByConseillerId(clientsConseillerId);
+                        if (clients.isEmpty()) {
+                            System.out.println("Aucun client trouvé pour ce conseiller.");
+                        } else {
+                            clients.stream()
+                                    .sorted((c1, c2) -> c1.getNom().compareToIgnoreCase(c2.getNom()))
+                                    .forEach(c -> System.out.println(c)); // ✅ renommé
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Erreur : " + e.getMessage());
+                    }
+                    break;
+                case 8:
                     return;
                 default:
                     System.out.println("Choix invalide.");

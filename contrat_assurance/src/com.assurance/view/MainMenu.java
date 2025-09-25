@@ -40,7 +40,7 @@ public class MainMenu {
 
             switch (choice) {
                 case 1:
-                    new ConseillerView(conseillerService, scanner).showMenu();
+                    new ConseillerView(conseillerService, clientService, scanner).showMenu(); // ✅ corrigé
                     break;
                 case 2:
                     new ClientView(clientService, scanner).showMenu();

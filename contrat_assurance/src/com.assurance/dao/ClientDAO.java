@@ -76,4 +76,19 @@ public class ClientDAO {
         }
     }
 
+    public List<Client> getClientsByConseillerId(int conseillerId) throws SQLException {
+        List<Client> clients = new ArrayList<>();
+        String query = "SELECT * FROM clients WHERE conseiller_id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, conseillerId);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                clients.add(new Client(rs.getInt("id"), rs.getString("nom"), rs.getString("prenom"),
+                        rs.getString("email"), rs.getInt("conseiller_id")));
+            }
+        }
+        return clients;
+    }
+
 }

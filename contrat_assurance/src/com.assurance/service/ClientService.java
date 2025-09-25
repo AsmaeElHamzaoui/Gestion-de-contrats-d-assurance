@@ -59,5 +59,21 @@ public class ClientService {
     public void deleteClient(int id) throws SQLException {
         clientDAO.deleteClient(id);
     }
+
+    public List<Client> getClientsByConseillerId(int conseillerId) throws SQLException {
+        if (conseillerDAO.getConseillerById(conseillerId) != null) {
+            return clientDAO.getClientsByConseillerId(conseillerId);
+        } else {
+            throw new IllegalArgumentException("Conseiller ID invalide.");
+        }
+    }
+
+    public List<Client> searchClientsByNom(String nom) throws SQLException {
+        List<Client> clients = clientDAO.getAllClients();
+        return clients.stream()
+                .filter(client -> client.getNom().toLowerCase().contains(nom.toLowerCase()))
+                .sorted((c1, c2) -> c1.getNom().compareToIgnoreCase(c2.getNom()))
+                .collect(Collectors.toList());
+    }
 }
 

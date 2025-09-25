@@ -1,9 +1,9 @@
 package com.assurance.view;
 
 import com.assurance.model.Contrat;
-import com.assurance.enums.TypeContrat;
 import com.assurance.service.ContratService;
-
+import com.assurance.enums.TypeContrat;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
@@ -25,59 +25,48 @@ public class ContratView {
             System.out.println("3. Afficher tous les contrats");
             System.out.println("4. Modifier un contrat");
             System.out.println("5. Supprimer un contrat");
-            System.out.println("6. Retour");
+            System.out.println("6. Afficher les contrats d'un client par ID");
+            System.out.println("7. Retour");
             System.out.print("Choix : ");
+
             int choice = scanner.nextInt();
             scanner.nextLine();
 
-            switch (choice) {
-                case 1:
-                    System.out.print("Type de contrat (AUTOMOBILE, MAISON, MALADIE) : ");
-                    String type = scanner.nextLine().toUpperCase();
-                    System.out.print("Date de début (YYYY-MM-DD) : ");
-                    String dateDebutStr = scanner.nextLine();
-                    System.out.print("Date de fin (YYYY-MM-DD) : ");
-                    String dateFinStr = scanner.nextLine();
-                    System.out.print("ID du client : ");
-                    int clientId = scanner.nextInt();
-                    Contrat contrat = new Contrat(0, TypeContrat.valueOf(type), LocalDate.parse(dateDebutStr),
-                            LocalDate.parse(dateFinStr), clientId);
-                    try {
+            try {
+                switch (choice) {
+                    case 1:
+                        System.out.print("Type de contrat (AUTO, HABITATION, SANTE) : ");
+                        String type = scanner.nextLine().toUpperCase();
+                        System.out.print("Date de début (YYYY-MM-DD) : ");
+                        String dateDebut = scanner.nextLine();
+                        System.out.print("Date de fin (YYYY-MM-DD) : ");
+                        String dateFin = scanner.nextLine();
+                        System.out.print("ID du client : ");
+                        int clientId = scanner.nextInt();
+                        Contrat contrat = new Contrat(0, TypeContrat.valueOf(type), LocalDate.parse(dateDebut), LocalDate.parse(dateFin), clientId);
                         contrat = contratService.addContrat(contrat);
                         System.out.println("Contrat ajouté avec succès. ID: " + contrat.getId());
-                    } catch (Exception e) {
-                        System.out.println("Erreur : " + e.getMessage());
-                    }
-                    break;
-                case 2:
-                    System.out.print("ID du contrat : ");
-                    int contratId = scanner.nextInt();
-                    try {
+                        break;
+                    case 2:
+                        System.out.print("ID du contrat : ");
+                        int contratId = scanner.nextInt();
                         Contrat foundContrat = contratService.getContratById(contratId);
                         if (foundContrat != null) {
                             System.out.println(foundContrat);
                         } else {
                             System.out.println("Contrat non trouvé.");
                         }
-                    } catch (Exception e) {
-                        System.out.println("Erreur : " + e.getMessage());
-                    }
-                    break;
-                case 3:
-                    try {
+                        break;
+                    case 3:
                         List<Contrat> contrats = contratService.getAllContratsWithClients();
                         for (Contrat c : contrats) {
                             System.out.println(c);
                         }
-                    } catch (Exception e) {
-                        System.out.println("Erreur : " + e.getMessage());
-                    }
-                    break;
-                case 4:
-                    System.out.print("ID du contrat à modifier : ");
-                    int updateId = scanner.nextInt();
-                    scanner.nextLine();
-                    try {
+                        break;
+                    case 4:
+                        System.out.print("ID du contrat à modifier : ");
+                        int updateId = scanner.nextInt();
+                        scanner.nextLine();
                         Contrat existingContrat = contratService.getContratById(updateId);
                         if (existingContrat != null) {
                             System.out.print("Nouveau type de contrat (actuel: " + existingContrat.getTypeContrat() + ") : ");
@@ -99,24 +88,34 @@ public class ContratView {
                         } else {
                             System.out.println("Contrat non trouvé.");
                         }
-                    } catch (Exception e) {
-                        System.out.println("Erreur : " + e.getMessage());
-                    }
-                    break;
-                case 5:
-                    System.out.print("ID du contrat à supprimer : ");
-                    int deleteId = scanner.nextInt();
-                    try {
+                        break;
+                    case 5:
+                        System.out.print("ID du contrat à supprimer : ");
+                        int deleteId = scanner.nextInt();
                         contratService.deleteContrat(deleteId);
                         System.out.println("Contrat supprimé (si existant).");
-                    } catch (Exception e) {
-                        System.out.println("Erreur : " + e.getMessage());
-                    }
-                    break;
-                case 6:
-                    return;
-                default:
-                    System.out.println("Choix invalide.");
+                        break;
+                    case 6:
+                        System.out.print("ID du client : ");
+                        int clientContratId = scanner.nextInt();
+                        List<Contrat> clientContrats = contratService.getContratsByClientId(clientContratId);
+                        if (clientContrats.isEmpty()) {
+                            System.out.println("Aucun contrat trouvé pour ce client.");
+                        } else {
+                            for (Contrat c : clientContrats) {
+                                System.out.println(c);
+                            }
+                        }
+                        break;
+                    case 7:
+                        return;
+                    default:
+                        System.out.println("Choix invalide.");
+                }
+            } catch (SQLException e) {
+                System.out.println("Erreur : " + e.getMessage());
+            } catch (IllegalArgumentException e) {
+                System.out.println("Erreur : " + e.getMessage());
             }
         }
     }

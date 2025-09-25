@@ -77,4 +77,19 @@ public class ContratDAO {
             stmt.executeUpdate();
         }
     }
+
+    public List<Contrat> getContratsByClientId(int clientId) throws SQLException {
+        List<Contrat> contrats = new ArrayList<>();
+        String query = "SELECT * FROM contrats WHERE client_id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, clientId);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                contrats.add(new Contrat(rs.getInt("id"), TypeContrat.valueOf(rs.getString("type_contrat")),
+                        rs.getDate("date_debut").toLocalDate(), rs.getDate("date_fin").toLocalDate(), rs.getInt("client_id")));
+            }
+        }
+        return contrats;
+    }
 }

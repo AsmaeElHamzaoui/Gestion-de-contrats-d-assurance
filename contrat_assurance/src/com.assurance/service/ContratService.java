@@ -65,4 +65,12 @@ public class ContratService {
         contratDAO.deleteContrat(id);
     }
 
+    public List<Contrat> getContratsByClientId(int clientId) throws SQLException {
+        if (clientDAO.getClientById(clientId) != null) {
+            return contratDAO.getContratsByClientId(clientId);
+        } else {
+            throw new IllegalArgumentException("Client ID invalide.");
+        }
+    }
+
 }

@@ -1,6 +1,8 @@
 package com.assurance.view;
 
+import com.assurance.model.Client;
 import com.assurance.model.Conseiller;
+import com.assurance.service.ClientService;
 import com.assurance.service.ConseillerService;
 
 import java.sql.SQLException;
@@ -9,10 +11,12 @@ import java.util.Scanner;
 
 public class ConseillerView {
     private ConseillerService conseillerService;
+    private ClientService clientService;
     private Scanner scanner;
 
-    public ConseillerView(ConseillerService conseillerService, Scanner scanner) {
+    public ConseillerView(ConseillerService conseillerService, ClientService clientService, Scanner scanner) {
         this.conseillerService = conseillerService;
+        this.clientService = clientService;
         this.scanner = scanner;
     }
 
@@ -24,7 +28,8 @@ public class ConseillerView {
             System.out.println("3. Afficher tous les conseillers");
             System.out.println("4. Modifier un conseiller");
             System.out.println("5. Supprimer un conseiller");
-            System.out.println("6. Retour");
+            System.out.println("6. Afficher les clients d'un conseiller par ID");
+            System.out.println("7. Retour");
             System.out.print("Choix : ");
             int choice = scanner.nextInt();
             scanner.nextLine();
@@ -87,11 +92,25 @@ public class ConseillerView {
                         System.out.println("Conseiller supprimé (si existant).");
                         break;
                     case 6:
+                        System.out.print("ID du conseiller : ");
+                        int clientsConseillerId = scanner.nextInt();
+                        List<Client> clients = clientService.getClientsByConseillerId(clientsConseillerId);
+                        if (clients.isEmpty()) {
+                            System.out.println("Aucun client trouvé pour ce conseiller.");
+                        } else {
+                            for (Client client : clients) {
+                                System.out.println(client);
+                            }
+                        }
+                        break;
+                    case 7:
                         return;
                     default:
                         System.out.println("Choix invalide.");
                 }
             } catch (SQLException e) {
+                System.out.println("Erreur : " + e.getMessage());
+            } catch (IllegalArgumentException e) {
                 System.out.println("Erreur : " + e.getMessage());
             }
         }

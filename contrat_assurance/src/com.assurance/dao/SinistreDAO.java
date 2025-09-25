@@ -81,4 +81,36 @@ public class SinistreDAO {
             stmt.executeUpdate();
         }
     }
+
+    public List<Sinistre> getSinistresByContratId(int contratId) throws SQLException {
+        List<Sinistre> sinistres = new ArrayList<>();
+        String query = "SELECT * FROM sinistres WHERE contrat_id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, contratId);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                sinistres.add(new Sinistre(rs.getInt("id"), TypeSinistre.valueOf(rs.getString("type_sinistre")),
+                        rs.getTimestamp("date_time").toLocalDateTime(), rs.getDouble("cout"),
+                        rs.getString("description"), rs.getInt("contrat_id")));
+            }
+        }
+        return sinistres;
+    }
+
+    public List<Sinistre> getSinistresByClientId(int clientId) throws SQLException {
+        List<Sinistre> sinistres = new ArrayList<>();
+        String query = "SELECT s.* FROM sinistres s JOIN contrats c ON s.contrat_id = c.id WHERE c.client_id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, clientId);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                sinistres.add(new Sinistre(rs.getInt("id"), TypeSinistre.valueOf(rs.getString("type_sinistre")),
+                        rs.getTimestamp("date_time").toLocalDateTime(), rs.getDouble("cout"),
+                        rs.getString("description"), rs.getInt("contrat_id")));
+            }
+        }
+        return sinistres;
+    }
 }
