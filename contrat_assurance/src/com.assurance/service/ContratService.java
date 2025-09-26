@@ -64,4 +64,5 @@ public class ContratService {
     public void deleteContrat(int id) throws SQLException {
         contratDAO.deleteContrat(id);
     }
+
 }
