@@ -25,6 +25,7 @@ public class ClientView {
             System.out.println("5. Supprimer un client");
             System.out.println("6. Retour");
             System.out.print("Choix : ");
+
             int choice = scanner.nextInt();
             scanner.nextLine();
 
