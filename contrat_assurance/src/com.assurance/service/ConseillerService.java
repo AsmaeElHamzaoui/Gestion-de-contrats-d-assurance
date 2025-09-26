@@ -34,4 +34,5 @@ public class ConseillerService {
     public void deleteConseiller(int id) throws SQLException {
         conseillerDAO.deleteConseiller(id);
     }
+
 }
