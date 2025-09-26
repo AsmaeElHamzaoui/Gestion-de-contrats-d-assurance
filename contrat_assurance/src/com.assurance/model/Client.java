@@ -2,32 +2,24 @@ package com.assurance.model;
 
 public class Client extends Person {
     private int id;
-    private Conseiller conseiller; // un client est suivi par un conseiller
+    private int conseillerId;
 
-    public Client(int id, String nom, String prenom, String email, Conseiller conseiller) {
+    public Client(int id, String nom, String prenom, String email, int conseillerId) {
         super(nom, prenom, email);
         this.id = id;
-        this.conseiller = conseiller;
+        this.conseillerId = conseillerId;
     }
 
-    // Getters et Setters
-    public int getId() {
-        return id;
-    }
-    public void setId(int id) {
-        this.id = id;
-    }
+    // Getters
+    public int getId() { return id; }
+    public int getConseillerId() { return conseillerId; }
 
-    public Conseiller getConseiller() {
-        return conseiller;
-    }
-    public void setConseiller(Conseiller conseiller) {
-        this.conseiller = conseiller;
-    }
+    // Setters
+    public void setId(int id) { this.id = id; }
+    public void setConseillerId(int conseillerId) { this.conseillerId = conseillerId; }
 
     @Override
     public String toString() {
-        return "Client{id=" + id + ", nom=" + getNom() + ", prenom=" + getPrenom() +
-                ", email=" + getEmail() + ", conseiller=" + conseiller.getId() + "}";
+        return super.toString() + ", Conseiller ID: " + conseillerId;
     }
 }

@@ -1,15 +1,22 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+package com.assurance;
+
+import com.assurance.view.MainMenu;
+import com.assurance.service.ClientService;
+import com.assurance.service.ConseillerService;
+import com.assurance.service.ContratService;
+import com.assurance.service.SinistreService;
+
 public class Main {
     public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
-        }
+        // Instanciation des services
+        ConseillerService conseillerService = new ConseillerService();
+        ClientService clientService = new ClientService();
+        ContratService contratService = new ContratService();
+        SinistreService sinistreService = new SinistreService();
+
+        // Passer les services au menu
+        MainMenu menu = new MainMenu(clientService, conseillerService, contratService, sinistreService);
+        menu.start();
     }
 }

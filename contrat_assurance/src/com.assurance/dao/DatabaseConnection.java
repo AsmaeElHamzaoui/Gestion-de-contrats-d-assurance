@@ -1,44 +1,23 @@
-package com.assurance.util;
+package com.assurance.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DatabaseConnection {
-
-    private static final String URL = "jdbc:postgresql://localhost:5432/contratAssurance";
+    private static final String URL = "jdbc:postgresql://localhost:5432/assurance_db";
     private static final String USER = "postgres";
     private static final String PASSWORD = "1234";
 
-    private static Connection connection;
-
-    private DatabaseConnection() {
-        // Empêche l'instanciation
-    }
-
-    // Singleton : une seule connexion partagée
     public static Connection getConnection() throws SQLException {
-        if (connection == null || connection.isClosed()) {
-            try {
-                Class.forName("org.postgresql.Driver"); // Charger le driver PostgreSQL
-                connection = DriverManager.getConnection(URL, USER, PASSWORD);
-                System.out.println("Connexion établie avec PostgreSQL !");
-            } catch (ClassNotFoundException e) {
-                throw new SQLException("Driver PostgreSQL introuvable", e);
-            }
-        }
-        return connection;
+        return DriverManager.getConnection(URL, USER, PASSWORD);
     }
 
-    // Fermer proprement la connexion
-    public static void closeConnection() {
-        if (connection != null) {
-            try {
-                connection.close();
-                System.out.println("Connexion fermée !");
-            } catch (SQLException e) {
-                System.err.println("Erreur lors de la fermeture de la connexion : " + e.getMessage());
-            }
+    public static void testConnection() {
+        try (Connection conn = getConnection()) {
+            System.out.println("Connexion à la base de données réussie !");
+        } catch (SQLException e) {
+            System.err.println("Échec de la connexion à la base de données : " + e.getMessage());
         }
     }
 }
