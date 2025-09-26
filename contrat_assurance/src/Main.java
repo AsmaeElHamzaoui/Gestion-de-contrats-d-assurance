@@ -1,4 +1,3 @@
-package com.assurance;
 
 import com.assurance.view.MainMenu;
 import com.assurance.service.ClientService;
